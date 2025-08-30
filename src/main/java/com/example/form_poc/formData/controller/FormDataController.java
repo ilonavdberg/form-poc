@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -32,8 +33,8 @@ public class FormDataController {
     }
 
     @PostMapping("/{uuid}/forms")
-    public ResponseEntity<Form> createFormFromData(@PathVariable UUID uuid, @RequestParam("type") FormType formType) {
-        Form result = formDataService.createFormFromData(uuid, formType);
+    public ResponseEntity<List<Form>> createFormFromData(@PathVariable UUID uuid, @RequestParam("type") List<FormType> formTypes) {
+        List<Form> result = formDataService.createFormsFromData(uuid, formTypes);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }
