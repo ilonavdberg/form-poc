@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.UUID;
@@ -24,9 +26,13 @@ public class FormA implements Form {
     @Setter(AccessLevel.NONE)
     private UUID uuid = UUID.randomUUID();
 
+    @NotNull
     private UUID formDataUuid;
 
+    @NotBlank
     private String fieldX;
+
+    @NotBlank
     private String fieldY;
 
     public static FormA from(FormData data) {

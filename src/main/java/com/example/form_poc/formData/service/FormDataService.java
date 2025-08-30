@@ -10,10 +10,12 @@ import com.example.form_poc.forms.model.FormB;
 import com.example.form_poc.forms.repository.FormARepository;
 import com.example.form_poc.forms.repository.FormBRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,10 +25,13 @@ public class FormDataService {
     private final FormDataRepository formDataRepository;
     private final FormARepository formARepository;
     private final FormBRepository formBRepository;
+    private final Validator validator;
 
     @Transactional
     public FormData create(UpsertFormDataRequest request) {
-        return formDataRepository.save(request.toEntity());
+        FormData formData = request.toEntity();
+        validateFormData(formData);
+        return formDataRepository.save(formData);
     }
 
     @Transactional
@@ -35,6 +40,7 @@ public class FormDataService {
                 .orElseThrow(() -> new EntityNotFoundException("No form data found with UUID: " + uuid));
 
         updateFormDataFromRequest(request, formData);
+        validateFormData(formData);
         return formDataRepository.save(formData);
     }
 
@@ -51,6 +57,18 @@ public class FormDataService {
             case FormType.A -> formARepository.save(FormA.from(formData));
             case FormType.B -> formBRepository.save(FormB.from(formData));
         };
+    }
+
+    private void validateFormData(FormData formData) {
+        List<FormType> formTypes = formData.getFormTypes();
+        if (formTypes == null || formTypes.isEmpty()) {
+            throw new IllegalArgumentException("At least one form type must be selected.");
+        }
+
+        formData.getFormTypes().forEach(formType -> {
+            Form form = formType.create(formData);
+            form.validateForm(validator);
+        });
     }
 
     private static void updateFormDataFromRequest(UpsertFormDataRequest request, FormData formData) {
