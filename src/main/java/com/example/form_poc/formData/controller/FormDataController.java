@@ -33,7 +33,7 @@ public class FormDataController {
     }
 
     @PostMapping("/{uuid}/forms")
-    public ResponseEntity<List<Form>> createFormFromData(@PathVariable UUID uuid, @RequestParam("type") List<FormType> formTypes) {
+    public ResponseEntity<List<Form>> createFormsFromData(@PathVariable UUID uuid, @RequestParam("type") List<FormType> formTypes) {
         List<Form> result = formDataService.createFormsFromData(uuid, formTypes);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
