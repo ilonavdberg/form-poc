@@ -70,10 +70,6 @@ public class FormDataService {
     }
 
     private Form createForm(FormData formData, FormType formType) {
-        if (!formData.getFormTypes().contains(formType)) {
-            throw new IllegalStateException(String.format("Cannot create form of type '%s' for FormData with UUID '%s': required data is missing", formType, formData.getUuid()));
-        }
-
         return switch (formType) {
             case FormType.A -> formARepository.save(FormA.from(formData));
             case FormType.B -> formBRepository.save(FormB.from(formData));

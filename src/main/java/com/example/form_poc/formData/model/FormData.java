@@ -2,6 +2,7 @@ package com.example.form_poc.formData.model;
 
 import com.example.form_poc.forms.model.FormType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class FormData {
             joinColumns = @JoinColumn(name = "form_data_id")
     )
     @Enumerated(EnumType.STRING)
+    @NotEmpty
     private List<FormType> formTypes;
 
     private String fieldX; // common field
