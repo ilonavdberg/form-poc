@@ -5,6 +5,7 @@ import com.example.form_poc.formData.model.FormData;
 import com.example.form_poc.formData.service.FormDataService;
 import com.example.form_poc.forms.model.FormType;
 import com.example.form_poc.forms.model.Form;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class FormDataController {
     private final FormDataService formDataService;
 
     @PostMapping
-    public ResponseEntity<FormData> create(@RequestBody UpsertFormDataRequest request) {
+    public ResponseEntity<FormData> create(@Valid @RequestBody UpsertFormDataRequest request) {
         FormData result = formDataService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

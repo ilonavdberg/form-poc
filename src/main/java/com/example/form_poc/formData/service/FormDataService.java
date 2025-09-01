@@ -40,7 +40,7 @@ public class FormDataService {
         FormData formData = formDataRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("No form data found with UUID: " + uuid));
 
-        updateFormDataFromRequest(request, formData);
+        request.applyTo(formData);
         validateFormData(formData);
         return formDataRepository.save(formData);
     }
@@ -58,11 +58,6 @@ public class FormDataService {
     }
 
     private void validateFormData(FormData formData) {
-        List<FormType> formTypes = formData.getFormTypes();
-        if (formTypes == null || formTypes.isEmpty()) {
-            throw new IllegalArgumentException("At least one form type must be selected.");
-        }
-
         formData.getFormTypes().forEach(formType -> {
             Form form = formType.create(formData);
             form.validateForm(validator);
@@ -74,12 +69,5 @@ public class FormDataService {
             case FormType.A -> formARepository.save(FormA.from(formData));
             case FormType.B -> formBRepository.save(FormB.from(formData));
         };
-    }
-
-    private static void updateFormDataFromRequest(UpsertFormDataRequest request, FormData formData) {
-        formData.setFormTypes(request.getFormTypes());
-        formData.setFieldX(request.getFieldX());
-        formData.setFieldY(request.getFieldY());
-        formData.setFieldZ(request.getFieldZ());
     }
 }
