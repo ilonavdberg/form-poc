@@ -3,13 +3,11 @@ package com.example.form_poc.formData.dto;
 import com.example.form_poc.formData.model.FormData;
 import com.example.form_poc.forms.model.FormType;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @NoArgsConstructor
-@Getter
 public class UpsertFormDataRequest {
     @NotEmpty
     private List<FormType> formTypes;
@@ -28,9 +26,9 @@ public class UpsertFormDataRequest {
     }
 
     public void applyTo(FormData formData) {
-        formData.setFormTypes(this.getFormTypes());
-        formData.setFieldX(this.getFieldX());
-        formData.setFieldY(this.getFieldY());
-        formData.setFieldZ(this.getFieldZ());
+        formData.setFormTypes(this.formTypes);
+        formData.setFieldX(this.fieldX);
+        formData.setFieldY(this.fieldY);
+        formData.setFieldZ(this.fieldZ);
     }
 }

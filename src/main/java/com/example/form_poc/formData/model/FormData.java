@@ -22,6 +22,7 @@ public class FormData {
     private Long id;
 
     @Setter(AccessLevel.NONE)
+    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @ElementCollection(targetClass = FormType.class)
