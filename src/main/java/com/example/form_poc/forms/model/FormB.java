@@ -24,6 +24,7 @@ public class FormB implements Form {
     private Long id;
 
     @Setter(AccessLevel.NONE)
+    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @NotNull
